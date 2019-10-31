@@ -20,29 +20,35 @@ class DataTable extends Component {
             })
                 .then(response => response.json())
                 .then(item => {
-                    this.props.deleteItemFromState(id)
+                    this.props.deleteItemFromState(id);
                     this.props.onDelete(false);
                 })
                 .catch(err => console.log(err))
+            //window.location.reload();
         }
 
     }
 
+    formatarDataExibicao(date) {
+        let data = new Date(Date.parse(date));
+
+        let mes = (data.getMonth() + 1);
+        mes = mes < 10 ? `0${mes}` : mes;
+
+        let dia = data.getUTCDate();
+        dia = dia < 10 ? `0${dia}` : dia;
+
+        data = `${dia}/${mes}/${data.getFullYear()}`;
+
+        return data;
+    }
+
     render() {
-        let count = 0;
 
         const items = this.props.items.map(item => {
 
-            let data = new Date(Date.parse(item.data));
-
-            let mes = (data.getMonth() + 1);
-            mes = mes < 10 ? `0${mes}` : mes;
-
-            let dia = data.getUTCDate();
-            dia = dia < 10 ? `0${dia}` : dia;
-
-            data = `${dia}/${mes}/${data.getFullYear()}`;
-
+            let data = this.formatarDataExibicao(item.data);
+            
             this.props.items.forEach((item, index) => item.num = index + 1);
 
             return (
@@ -50,7 +56,6 @@ class DataTable extends Component {
                     {/* <th scope="row">{item.id}</th> */}
                     <td>{item.num}</td>
                     <td>{item.solicitante}</td>
-                    {/* <td>{item.data}</td> */}
                     <td>{data}</td>
                     <td>{item.aberto ? 'Aberto' : 'Fechado'}</td>
                     <td>{item.solicitacao}</td>

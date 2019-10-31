@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, InputGroupText } from 'reactstrap';
 import Api from '../../Api';
 
 
@@ -7,8 +7,8 @@ class AddEditForm extends React.Component {
     state = {
         id: '',
         solicitante: '',
-        data: '',
-        aberto: '',
+        data: null,
+        aberto: true,
         solicitacao: '',
     }
 
@@ -16,6 +16,9 @@ class AddEditForm extends React.Component {
 
     onChange = e => {
         this.setState({ [e.target.name]: e.target.value })
+    }
+    onCheck = e => {
+        this.setState({ [e.target.name]: e.target.checked })
     }
 
     submitFormAdd = e => {
@@ -72,8 +75,29 @@ class AddEditForm extends React.Component {
             .catch(err => console.log(err))
     }
 
+    obterDataExibicao() {
+
+        if (this.state.data) {
+            return this.formatarData(new Date(Date.parse(this.state.data)));
+        }
+
+        return this.formatarData(new Date());
+    }
+
+    formatarData(data) {
+
+        let mes = (data.getMonth() + 1);
+        mes = mes < 10 ? `0${mes}` : mes;
+
+        let dia = data.getUTCDate();
+        dia = dia < 10 ? `0${dia}` : dia;
+
+        data = `${data.getFullYear()}-${mes}-${dia}`;
+
+        return data;
+    }
+
     componentDidMount() {
-        // if item exists, populate the state with proper data
         if (this.props.item) {
             const { id, solicitante, data, aberto, solicitacao } = this.props.item
             this.setState({ id, solicitante, data, aberto, solicitacao })
@@ -85,19 +109,21 @@ class AddEditForm extends React.Component {
             <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
                 <FormGroup>
                     <Label for="solicitante">Solicitante</Label>
-                    <Input type="text" maxLength="255" name="solicitante" id="solicitante" onChange={this.onChange} value={this.state.first === null ? '' : this.state.first} />
+                    <Input type="text" maxLength="255" name="solicitante" id="solicitante" onChange={this.onChange} value={this.state.solicitante === null ? '' : this.state.solicitante} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="data">Data</Label>
-                    <Input type="text" name="data" id="data" onChange={this.onChange} value={this.state.last === null ? '' : this.state.last} />
+                    <Input type="date" name="data" id="data" disabled={this.state.id === ''} placeholder="date placeholder" onChange={this.onChange} value={this.obterDataExibicao()} max={this.formatarData(new Date())} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="aberto">Aberto</Label>
-                    <Input type="text" name="aberto" id="aberto" onChange={this.onChange} value={this.state.email === null ? '' : this.state.email} />
+                    <InputGroupText>
+                        <Input addon type="checkbox" disabled={this.state.id === ''} placeholder="Aberto" name="aberto" id="aberto" onChange={this.onCheck} checked={this.state.aberto === null ? false : this.state.aberto} />
+                    </InputGroupText>
                 </FormGroup>
                 <FormGroup>
                     <Label for="solicitacao">Solicitação</Label>
-                    <Input type="textarea" maxLength="1000" name="solicitacao" id="solicitacao" onChange={this.onChange} value={this.state.phone === null ? '' : this.state.phone} />
+                    <Input type="textarea" maxLength="1000" name="solicitacao" id="solicitacao" onChange={this.onChange} value={this.state.solicitacao === null ? '' : this.state.solicitacao} />
                 </FormGroup>
 
                 <Button outline color="success">Salvar</Button>

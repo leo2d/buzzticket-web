@@ -64,7 +64,7 @@ class Home extends Component {
 
                     <Row>
                         <Col>
-                            <h1 style={{ margin: "20px 0" }}>Tickets Abertos</h1>
+                            <h1 style={{ margin: "20px 0" }}>Tickets </h1>
                         </Col>
                     </Row>
                     <Row>
