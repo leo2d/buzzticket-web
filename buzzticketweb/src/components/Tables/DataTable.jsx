@@ -9,7 +9,7 @@ class DataTable extends Component {
     deleteItem = id => {
         let confirmDelete = window.confirm('Deseja realmente excluir?')
         if (confirmDelete) {
-            fetch(Api.baseUrl, {
+            fetch(`${Api.baseUrl}?id=${id}`, {
                 method: 'delete',
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,6 +21,7 @@ class DataTable extends Component {
                 .then(response => response.json())
                 .then(item => {
                     this.props.deleteItemFromState(id)
+                    this.props.onDelete(false);
                 })
                 .catch(err => console.log(err))
         }

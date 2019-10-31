@@ -69,7 +69,7 @@ class Home extends Component {
                     </Row>
                     <Row>
                         <Col>
-                            <DataTable items={this.state.items} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
+                            <DataTable items={this.state.items} onDelete={this.getItems} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
                         </Col>
                     </Row>
 
