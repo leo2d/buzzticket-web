@@ -18,13 +18,11 @@ class DataTable extends Component {
                     id
                 })
             })
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(item => {
                     this.props.deleteItemFromState(id);
-                    this.props.onDelete(false);
                 })
                 .catch(err => console.log(err))
-            //window.location.reload();
         }
 
     }
@@ -48,7 +46,7 @@ class DataTable extends Component {
         const items = this.props.items.map(item => {
 
             let data = this.formatarDataExibicao(item.data);
-            
+
             this.props.items.forEach((item, index) => item.num = index + 1);
 
             return (
@@ -61,7 +59,8 @@ class DataTable extends Component {
                     <td>{item.solicitacao}</td>
                     <td>
                         <div style={{ width: "200px" }}>
-                            <ModalForm buttonLabel="Editar" item={item} updateState={this.props.updateState} />
+                            <ModalForm buttonLabel="Editar" item={item} updateState={this.props.updateState}
+                                reloadGrid={this.props.reloadGrid} />
                             {' '}
                             <Button outline color="danger" size="sm" onClick={() => this.deleteItem(item.id)} >Excluir</Button>
                         </div>

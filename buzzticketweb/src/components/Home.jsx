@@ -10,7 +10,7 @@ class Home extends Component {
         items: []
     }
 
-    getItems(buscarTodos) {
+    getItems = (buscarTodos) =>{
 
         let url = buscarTodos ? Api.baseUrl : `${Api.baseUrl}${Api.buscarOrdenado}`;
 
@@ -58,7 +58,7 @@ class Home extends Component {
                     </Row>
                     <Row>
                         <Col>
-                            <ModalForm buttonLabel="Criar Ticket" addItemToState={this.addItemToState} />
+                            <ModalForm buttonLabel="Criar Ticket"  reloadGrid={this.getItems} addItemToState={this.addItemToState} />
                         </Col>
                     </Row>
 
@@ -69,7 +69,7 @@ class Home extends Component {
                     </Row>
                     <Row>
                         <Col>
-                            <DataTable items={this.state.items} onDelete={this.getItems} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
+                            <DataTable items={this.state.items} reloadGrid={this.getItems} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
                         </Col>
                     </Row>
 

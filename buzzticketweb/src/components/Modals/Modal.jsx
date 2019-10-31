@@ -10,10 +10,18 @@ class ModalForm extends Component {
         }
     }
 
-    toggle = () => {
-        this.setState(prevState => ({
-            modal: !prevState.modal
-        }))
+    toggle = (close = null) => {
+        // debugger;
+
+        if (close != null && (typeof close === 'boolean')) {
+            this.setState({
+                modal: close
+            })
+        } else {
+            this.setState(prevState => ({
+                modal: !prevState.modal
+            }))
+        }
     }
 
     render() {
@@ -49,6 +57,7 @@ class ModalForm extends Component {
                     <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
                     <ModalBody>
                         <AddEditForm
+                            reloadGrid={this.props.reloadGrid}
                             addItemToState={this.props.addItemToState}
                             updateState={this.props.updateState}
                             toggle={this.toggle}

@@ -30,19 +30,19 @@ class AddEditForm extends React.Component {
             },
             body: JSON.stringify({
                 solicitante: this.state.solicitante,
-                data: this.state.data,
+                data: this.state.data || this.formatarData(new Date()),
                 aberto: this.state.aberto,
                 solicitacao: this.state.solicitacao
             })
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(item => {
-                if (Array.isArray(item)) {
-                    this.props.addItemToState(item[0])
-                    this.props.toggle()
-                } else {
-                    console.log('failure')
-                }
+                this.props.reloadGrid(false);
+                this.props.toggle();
+
+                //let ticket = this.state;
+                //this.props.addItemToState(ticket);
+                // this.props.toggle();
             })
             .catch(err => console.log(err))
     }
@@ -62,26 +62,36 @@ class AddEditForm extends React.Component {
                 solicitacao: this.state.solicitacao
             })
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(item => {
-                if (Array.isArray(item)) {
-                    // console.log(item[0])
-                    this.props.updateState(item[0])
-                    this.props.toggle()
-                } else {
-                    console.log('failure')
-                }
+
+                this.props.reloadGrid(false);
+                this.props.toggle();
+                //this.props.updateState(this.state);
+                // .then(item => {
+                //     if (Array.isArray(item)) {
+                //         this.props.updateState(item[0])
+                //         this.props.toggle()
+                //     } else {
+                //         console.log('failure')
+                //     }
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(`error: ${err}`))
     }
 
     obterDataExibicao() {
 
+        let date = '';
+
         if (this.state.data) {
-            return this.formatarData(new Date(Date.parse(this.state.data)));
+            date = this.formatarData(new Date(Date.parse(this.state.data)));
+        } else {
+            date = this.formatarData(new Date());
         }
 
-        return this.formatarData(new Date());
+        return date;
+
+        // return this.formatarData(new Date());
     }
 
     formatarData(data) {
@@ -102,6 +112,10 @@ class AddEditForm extends React.Component {
             const { id, solicitante, data, aberto, solicitacao } = this.props.item
             this.setState({ id, solicitante, data, aberto, solicitacao })
         }
+
+        let date = this.obterDataExibicao();
+        this.setState({ data: date });
+
     }
 
     render() {
