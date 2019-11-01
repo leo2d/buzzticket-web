@@ -29,11 +29,14 @@ class Home extends Component {
     updateState = (item) => {
         const itemIndex = this.state.items.findIndex(data => data.id === item.id)
         const newArray = [
-            // destructure all items from beginning to the indexed item
+            // pegando todo mundo do array de itens que está antes do item que está sendo alterado
             ...this.state.items.slice(0, itemIndex),
-            // add the updated item to the array
+
+            // adicionando o item alterado no array, exatamente na mesma posicao do original 
             item,
-            // add the rest of the items to the array from the index after the replaced item
+
+            // adicionando o restante do array de itens, assim criando um novo array 
+            // onde o item alterado ficará no mesmo index que ocupava antes, assim como os demais valores
             ...this.state.items.slice(itemIndex + 1)
         ]
         this.setState({ items: newArray })

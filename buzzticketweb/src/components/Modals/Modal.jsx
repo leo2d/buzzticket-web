@@ -11,7 +11,6 @@ class ModalForm extends Component {
     }
 
     toggle = (close = null) => {
-        // debugger;
 
         if (close != null && (typeof close === 'boolean')) {
             this.setState({
