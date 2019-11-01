@@ -79,27 +79,12 @@ class AddEditForm extends React.Component {
             .catch(err => console.log(`error: ${err}`))
     }
 
-    obterDataExibicao() {
-
-        let date = '';
-
-        if (this.state.data) {
-            date = this.formatarData(new Date(Date.parse(this.state.data)));
-        } else {
-            date = this.formatarData(new Date());
-        }
-
-        return date;
-
-        // return this.formatarData(new Date());
-    }
-
     formatarData(data) {
 
         let mes = (data.getMonth() + 1);
         mes = mes < 10 ? `0${mes}` : mes;
 
-        let dia = data.getUTCDate();
+        let dia = data.getDate();
         dia = dia < 10 ? `0${dia}` : dia;
 
         data = `${data.getFullYear()}-${mes}-${dia}`;
@@ -108,14 +93,17 @@ class AddEditForm extends React.Component {
     }
 
     componentDidMount() {
+
+        let date = this.formatarData(new Date());
+
         if (this.props.item) {
             const { id, solicitante, data, aberto, solicitacao } = this.props.item
             this.setState({ id, solicitante, data, aberto, solicitacao })
+
+            date = this.formatarData(new Date(this.props.item.data));
         }
 
-        let date = this.obterDataExibicao();
         this.setState({ data: date });
-
     }
 
     render() {
@@ -127,7 +115,7 @@ class AddEditForm extends React.Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="data">Data</Label>
-                    <Input type="date" name="data" id="data" disabled={this.state.id === ''} placeholder="date placeholder" onChange={this.onChange} value={this.obterDataExibicao()} max={this.formatarData(new Date())} />
+                    <Input type="date" name="data" id="data" disabled={this.state.id === ''} onChange={this.onChange} value={this.state.data} max={this.formatarData(new Date())} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="aberto">Aberto</Label>
